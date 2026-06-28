@@ -44,7 +44,7 @@ export class MCPClient {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `******,
+        Authorization: "Bearer " + this.apiKey,
       },
       body: JSON.stringify(payload),
     });

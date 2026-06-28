@@ -16,7 +16,7 @@ export class IOSLensClient {
   private get headers(): Record<string, string> {
     return {
       "Content-Type": "application/json",
-      Authorization: `******,
+      Authorization: "Bearer " + this.apiKey,
     };
   }
 

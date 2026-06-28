@@ -2,7 +2,7 @@
 
 Base URL: `https://api.ioslens.ai/v1`
 
-Authentication: ****** or execution token in `Authorization` header.
+Authentication: JWT or execution token in `Authorization` header (scheme: Bearer).
 
 ---
 
