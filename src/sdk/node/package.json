@@ -1,0 +1,27 @@
+{
+  "name": "ioslens",
+  "version": "1.0.0",
+  "description": "iOSLENS.ai Node.js SDK — Governed AI Intelligence Platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src --ext .ts"
+  },
+  "files": ["dist"],
+  "keywords": ["ioslens", "governance", "ai", "mcp"],
+  "license": "UNLICENSED",
+  "author": "SMEPro Technologies LLC",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "@types/jest": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

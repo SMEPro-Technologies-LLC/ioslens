@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ioslens-config
+  namespace: ioslens
+  labels:
+    app.kubernetes.io/name: ioslens
+data:
+  LOG_LEVEL: "INFO"
+  ENVIRONMENT: "production"
+  ALLOWED_ORIGINS: "https://app.ioslens.ai"
+  JWT_ALGORITHM: "HS256"
+  MCP_HOST: "0.0.0.0"
+  MCP_PORT: "8001"
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  WORKERS: "4"
