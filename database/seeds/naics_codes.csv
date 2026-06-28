@@ -1,0 +1,28 @@
+code,title,sector
+11,Agriculture Forestry Fishing and Hunting,Agriculture
+21,Mining Quarrying and Oil and Gas Extraction,Mining
+22,Utilities,Utilities
+23,Construction,Construction
+31,Manufacturing,Manufacturing
+42,Wholesale Trade,Trade
+44,Retail Trade,Trade
+48,Transportation and Warehousing,Transportation
+51,Information,Information
+52,Finance and Insurance,Finance
+53,Real Estate and Rental and Leasing,Real Estate
+54,Professional Scientific and Technical Services,Professional Services
+541511,Custom Computer Programming Services,Professional Services
+541512,Computer Systems Design Services,Professional Services
+55,Management of Companies and Enterprises,Management
+56,Administrative and Support Services,Administrative
+61,Educational Services,Education
+611110,Elementary and Secondary Schools,Education
+611310,Colleges Universities and Professional Schools,Education
+62,Health Care and Social Assistance,Healthcare
+621111,Offices of Physicians (except Mental Health Specialists),Healthcare
+622110,General Medical and Surgical Hospitals,Healthcare
+71,Arts Entertainment and Recreation,Arts
+72,Accommodation and Food Services,Hospitality
+81,Other Services (except Public Administration),Other Services
+92,Public Administration,Government
+522110,Commercial Banking,Finance

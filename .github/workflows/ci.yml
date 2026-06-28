@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dev dependencies
+        run: pip install -r src/requirements-dev.txt
+
+      - name: Run flake8
+        run: flake8 src/ioslens/ --max-line-length=100 --ignore=E203,W503
+
+      - name: Check formatting (black)
+        run: black src/ioslens/ --check --line-length=100
+
+      - name: Check import order (isort)
+        run: isort src/ioslens/ --check-only --profile=black
+
+  test-unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r src/requirements-dev.txt
+
+      - name: Run unit tests
+        run: |
+          PYTHONPATH=src pytest tests/unit/ -v --tb=short \
+            --cov=src/ioslens --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.xml
+        continue-on-error: true
+
+  test-integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: ioslens
+          POSTGRES_PASSWORD: ioslens_test
+          POSTGRES_DB: ioslens_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ioslens"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r src/requirements-dev.txt
+
+      - name: Apply migrations
+        env:
+          PGPASSWORD: ioslens_test
+        run: |
+          for f in database/migrations/*.sql; do
+            echo "Applying $f..."
+            psql -h localhost -U ioslens -d ioslens_test -f "$f" -v ON_ERROR_STOP=1
+          done
+
+      - name: Run integration tests
+        env:
+          DATABASE_URL: postgresql+asyncpg://ioslens@localhost:5432/ioslens_test
+          TEST_DATABASE_URL: postgresql+asyncpg://ioslens@localhost:5432/ioslens_test
+          PGPASSWORD: ioslens_test
+          REDIS_URL: redis://localhost:6379/0
+          JWT_SECRET: ci-test-secret
+          ENVIRONMENT: development
+        run: |
+          PYTHONPATH=src pytest tests/integration/ -v --tb=short
+
+  build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs: [lint, test-unit]
+    steps:
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build API image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          target: api
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build MCP image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          target: mcp
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

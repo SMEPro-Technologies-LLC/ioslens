@@ -1,0 +1,65 @@
+name: CD — Staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: staging-deploy
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_STAGING }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for GCR
+        run: gcloud auth configure-docker gcr.io
+
+      - name: Build and push API image
+        run: |
+          docker build -t $REGISTRY/ioslens/api:$IMAGE_TAG -f Dockerfile --target api .
+          docker push $REGISTRY/ioslens/api:$IMAGE_TAG
+
+      - name: Build and push MCP image
+        run: |
+          docker build -t $REGISTRY/ioslens/mcp:$IMAGE_TAG -f Dockerfile --target mcp .
+          docker push $REGISTRY/ioslens/mcp:$IMAGE_TAG
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials ioslens-staging \
+            --region ${{ secrets.GCP_REGION }} \
+            --project ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to staging
+        env:
+          ENVIRONMENT: staging
+          IMAGE_TAG: ${{ github.sha }}
+          REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
+        run: bash infra/scripts/deploy.sh
+
+      - name: Run smoke tests
+        run: |
+          sleep 15
+          curl -f https://api.staging.ioslens.ai/health || exit 1
+          echo "Staging smoke test passed"
