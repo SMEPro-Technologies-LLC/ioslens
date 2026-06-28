@@ -25,11 +25,15 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Validate required secrets
+        # GitHub Actions renders both unset secrets and secrets set to an empty
+        # string as an empty environment variable, so -z correctly catches both
+        # cases. Any secret that evaluates to "" here must be configured before
+        # google-github-actions/auth can authenticate successfully.
         run: |
           missing=()
-          [ -z "$GCP_PROJECT_ID" ]        && missing+=("GCP_PROJECT_ID")
+          [ -z "$GCP_PROJECT_ID" ]          && missing+=("GCP_PROJECT_ID")
           [ -z "$GCP_CREDENTIALS_STAGING" ] && missing+=("GCP_CREDENTIALS_STAGING")
-          [ -z "$GCP_REGION" ]             && missing+=("GCP_REGION")
+          [ -z "$GCP_REGION" ]              && missing+=("GCP_REGION")
           if [ ${#missing[@]} -gt 0 ]; then
             echo "::error::The following required secrets are not configured: ${missing[*]}"
             echo "Configure them under Settings → Secrets and variables → Actions (or the 'staging' environment)."
