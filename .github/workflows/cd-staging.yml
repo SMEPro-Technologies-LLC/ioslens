@@ -55,6 +55,8 @@ jobs:
     needs: publish
     runs-on: ubuntu-latest
     environment: staging
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: google-github-actions/auth@v2

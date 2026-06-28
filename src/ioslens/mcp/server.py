@@ -95,11 +95,11 @@ async def _handle_request(body: dict) -> dict:
             return _ok(req_id, {"content": [{"type": "text", "text": str(result)}]})
         except KeyError:
             return _error(req_id, -32601, f"Unknown tool: {tool_name!r}")
-        except PermissionError as e:
-            return _error(req_id, -32002, str(e))
+        except PermissionError:
+            return _error(req_id, -32002, "Permission denied")
         except Exception as e:
-            logger.exception("Tool %r raised: %s", tool_name, e)
-            return _error(req_id, -32603, f"Tool error: {e}")
+            logger.exception("Tool %r raised unexpected error", tool_name)
+            return _error(req_id, -32603, "Internal tool error")
 
     # ── Resources ────────────────────────────────────────────────────────────
 
@@ -113,8 +113,9 @@ async def _handle_request(body: dict) -> dict:
             return _ok(req_id, {"contents": [{"uri": uri, "text": content}]})
         except KeyError:
             return _error(req_id, -32601, f"Unknown resource: {uri!r}")
-        except Exception as e:
-            return _error(req_id, -32603, str(e))
+        except Exception:
+            logger.exception("Resource read error: %s", uri)
+            return _error(req_id, -32603, "Internal resource error")
 
     # ── Prompts ──────────────────────────────────────────────────────────────
 

@@ -34,7 +34,7 @@ async def get_current_identity(
     if scheme.lower() != "bearer" or not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="****** required",
+            detail="Bearer token required",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
