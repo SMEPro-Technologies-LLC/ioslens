@@ -49,7 +49,9 @@ class AnomalyDetector:
         """Analyze a request for anomalies and return any detected events."""
         logger.debug(
             "Anomaly analysis: tenant=%s subject=%s action=%s",
-            tenant_id, subject_id, action,
+            tenant_id,
+            subject_id,
+            action,
         )
         # Stub: no anomalies detected in scaffold
         return []

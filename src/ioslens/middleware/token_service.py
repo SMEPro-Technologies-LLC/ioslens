@@ -53,7 +53,10 @@ class TokenService:
 
         logger.debug(
             "Minted execution token: user=%s tenant=%s purpose=%s jti=%s",
-            user_id, tenant_id, purpose, jti,
+            user_id,
+            tenant_id,
+            purpose,
+            jti,
         )
 
         return {

@@ -51,7 +51,10 @@ class PolicyEngine:
         """Evaluate all applicable policies and return a decision."""
         logger.debug(
             "PolicyEngine evaluate: tenant=%s role=%s action=%s resource=%s",
-            request.tenant_id, request.role, request.action, request.resource_type,
+            request.tenant_id,
+            request.role,
+            request.action,
+            request.resource_type,
         )
 
         # Stub: PERMIT all in scaffold

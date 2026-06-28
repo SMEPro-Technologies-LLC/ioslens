@@ -42,7 +42,9 @@ class UDMResolver:
 
         logger.debug(
             "UDM resolve: cip=%s soc=%s naics=%s",
-            cip_code, soc_code, naics_code,
+            cip_code,
+            soc_code,
+            naics_code,
         )
         # Stub: return empty — database layer would populate this
         return []

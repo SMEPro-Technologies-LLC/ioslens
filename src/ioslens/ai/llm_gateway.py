@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 from ioslens.config import get_settings
 
@@ -35,13 +34,19 @@ class LLMGateway:
 
         if provider == "openai":
             return await self._openai_complete(
-                system_prompt, user_content, model or "gpt-4o-mini",
-                temperature, max_tokens,
+                system_prompt,
+                user_content,
+                model or "gpt-4o-mini",
+                temperature,
+                max_tokens,
             )
         if provider == "anthropic":
             return await self._anthropic_complete(
-                system_prompt, user_content, model or "claude-3-haiku-20240307",
-                temperature, max_tokens,
+                system_prompt,
+                user_content,
+                model or "claude-3-haiku-20240307",
+                temperature,
+                max_tokens,
             )
 
         raise ValueError(f"Unsupported LLM provider: {provider}")

@@ -33,6 +33,7 @@ async def list_tenant_users(current_user: CurrentUser) -> dict:
     """List users in the current tenant (admin only)."""
     if current_user.role != "admin":
         from fastapi import HTTPException, status
+
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin role required",

@@ -6,8 +6,7 @@ from typing import Annotated
 
 from fastapi import Depends, Header, HTTPException, status
 
-from ioslens.middleware.auth_service import AuthService, AuthenticatedUser
-
+from ioslens.middleware.auth_service import AuthenticatedUser, AuthService
 
 _auth_service = AuthService()
 

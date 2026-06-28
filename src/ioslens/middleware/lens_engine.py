@@ -60,10 +60,7 @@ class LensEngine:
     def _layer3_clearance(self, ctx: LensContext) -> LensContext:
         """L3: Clearance-based record removal."""
         # Remove records whose clearance_level > user's clearance
-        ctx.data = [
-            r for r in ctx.data
-            if r.get("clearance_level", 1) <= ctx.clearance
-        ]
+        ctx.data = [r for r in ctx.data if r.get("clearance_level", 1) <= ctx.clearance]
         logger.debug("L3 clearance filter: clearance=%d remaining=%d", ctx.clearance, len(ctx.data))
         return ctx
 

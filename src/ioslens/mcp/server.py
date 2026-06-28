@@ -9,9 +9,9 @@ import sys
 from typing import Any
 
 from ioslens.config import get_settings
-from ioslens.mcp.tools import TOOLS, dispatch_tool
-from ioslens.mcp.resources import get_resource
 from ioslens.mcp.prompts import get_prompt
+from ioslens.mcp.resources import get_resource
+from ioslens.mcp.tools import TOOLS, dispatch_tool
 
 logger = logging.getLogger(__name__)
 
@@ -65,11 +65,13 @@ class MCPServer:
             return await dispatch_tool(params.get("name", ""), params.get("arguments", {}))
         if method == "resources/list":
             from ioslens.mcp.resources import RESOURCES
+
             return {"resources": RESOURCES}
         if method == "resources/read":
             return await get_resource(params.get("uri", ""))
         if method == "prompts/list":
             from ioslens.mcp.prompts import PROMPTS
+
             return {"prompts": PROMPTS}
         if method == "prompts/get":
             return await get_prompt(

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import logging
-import uuid
 from typing import Any
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -54,7 +53,10 @@ class AuditWriter:
         audit_id = str(result.scalar())
         logger.debug(
             "Audit recorded: id=%s tenant=%s action=%s decision=%s",
-            audit_id, tenant_id, action, decision,
+            audit_id,
+            tenant_id,
+            action,
+            decision,
         )
         return audit_id
 
@@ -66,11 +68,7 @@ class AuditWriter:
     ) -> list[dict]:
         """Verify audit chain integrity for a tenant."""
         result = await self._session.execute(
-            text(
-                "SELECT * FROM verify_audit_chain("
-                "  :tenant_id::uuid, :from_seq, :to_seq"
-                ")"
-            ),
+            text("SELECT * FROM verify_audit_chain(" "  :tenant_id::uuid, :from_seq, :to_seq" ")"),
             {"tenant_id": tenant_id, "from_seq": from_seq, "to_seq": to_seq},
         )
         rows = result.mappings().all()

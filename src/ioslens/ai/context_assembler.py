@@ -54,10 +54,7 @@ class ContextAssembler:
         sanitized_query = self._sanitize(user_query)
 
         # Filter data chunks
-        filtered_chunks = [
-            self._filter_fields(chunk, excluded_fields)
-            for chunk in data_chunks
-        ]
+        filtered_chunks = [self._filter_fields(chunk, excluded_fields) for chunk in data_chunks]
 
         # Build user content
         data_str = "\n".join(str(c) for c in filtered_chunks)
@@ -68,7 +65,8 @@ class ContextAssembler:
 
         logger.debug(
             "Context assembled: estimated_tokens=%d excluded_fields=%s",
-            estimated, excluded_fields,
+            estimated,
+            excluded_fields,
         )
 
         return ContextChunk(

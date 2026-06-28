@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from ioslens.api.v1 import governance, audit, udm, tenants, health
+from ioslens.api.v1 import audit, governance, health, tenants, udm
 
 api_router = APIRouter()
 

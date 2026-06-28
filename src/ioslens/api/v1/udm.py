@@ -37,8 +37,7 @@ async def resolve_udm(
         soc_code=soc_code,
         naics_code=naics_code,
         mappings=[
-            {"id": str(m.id), "label": m.label, "description": m.description}
-            for m in mappings
+            {"id": str(m.id), "label": m.label, "description": m.description} for m in mappings
         ],
     )
 

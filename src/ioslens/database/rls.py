@@ -25,9 +25,7 @@ async def set_tenant_context(session: AsyncSession, tenant_id: str) -> None:
 
 async def clear_tenant_context(session: AsyncSession) -> None:
     """Clear the tenant context variable from the PostgreSQL session."""
-    await session.execute(
-        text("SELECT set_config('app.tenant_id', '', true)")
-    )
+    await session.execute(text("SELECT set_config('app.tenant_id', '', true)"))
 
 
 class RLSSession:
