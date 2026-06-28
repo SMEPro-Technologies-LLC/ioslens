@@ -1,0 +1,22 @@
+system,code,title,description,parent_code,level
+SOC,11,Management Occupations,Plan direct or coordinate activities of organizations or departments.,,1
+SOC,11-3021,Computer and Information Systems Managers,Plan direct or coordinate activities in such fields as electronic data processing.,11,3
+SOC,13,Business and Financial Operations Occupations,Work as analysts and specialists in business operations.,,1
+SOC,13-1161,Market Research Analysts and Marketing Specialists,Research conditions in local regional or national markets.,13,3
+SOC,15,Computer and Mathematical Occupations,Workers who apply mathematical or computing principles to solve problems.,,1
+SOC,15-1200,Computer Occupations,Workers who design develop test and maintain software and computer systems.,15,2
+SOC,15-1211,Computer Systems Analysts,Analyze science engineering business and other data processing problems.,15-1200,3
+SOC,15-1221,Computer and Information Research Scientists,Invent and design new approaches to computing technology.,15-1200,3
+SOC,15-1231,Computer Network Support Specialists,Analyze test troubleshoot and evaluate existing network systems.,15-1200,3
+SOC,15-1241,Computer Network Architects,Design and implement computer and information networks.,15-1200,3
+SOC,15-1251,Computer Programmers,Create modify and test the code and scripts that allow computer applications to run.,15-1200,3
+SOC,15-1252,Software Developers,Research design and develop computer and network software or specialized utility programs.,15-1200,3
+SOC,15-1253,Software Quality Assurance Analysts and Testers,Develop and execute software tests to identify software problems.,15-1200,3
+SOC,15-1254,Web Developers,Design create and modify Web sites.,15-1200,3
+SOC,15-1255,Web and Digital Interface Designers,Design digital user interfaces or websites.,15-1200,3
+SOC,15-2051,Data Scientists,Develop and implement a set of techniques or analytics applications.,15,3
+SOC,25,Educational Instruction and Library Occupations,Workers who teach students or provide library services.,,1
+SOC,25-1021,Computer Science Teachers Postsecondary,Teach courses in computer science.,25,3
+SOC,29,Healthcare Practitioners and Technical Occupations,Workers who diagnose and treat patients.,,1
+SOC,29-1141,Registered Nurses,Assess patient health problems and needs develop and implement nursing care plans.,29,3
+SOC,29-1171,Nurse Practitioners,Diagnose and treat acute episodic or chronic illness.,29,3

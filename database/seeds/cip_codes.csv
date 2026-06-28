@@ -1,0 +1,26 @@
+system,code,title,description,parent_code,level
+CIP,11,Computer and Information Sciences and Support Services,Programs that focus on computer hardware software and information systems.,, 1
+CIP,11.01,Computer and Information Sciences General,General programs in computer and information sciences.,11,2
+CIP,11.0101,Computer and Information Sciences General,A general program that focuses on computer and information sciences.,11.01,3
+CIP,11.0201,Computer Programming/Programmer General,A general program that prepares individuals to write and execute programs.,11.02,3
+CIP,11.0301,Data Processing and Data Processing Technology/Technician,A program that prepares individuals to enter data into and retrieve it from computer systems.,11.03,3
+CIP,11.0401,Information Science/Studies,A program that focuses on collecting organizing storing retrieving and disseminating information.,11.04,3
+CIP,11.0501,Computer Systems Analysis/Analyst,A program that prepares individuals to apply programming and systems analysis principles.,11.05,3
+CIP,11.0601,Data Entry/Microcomputer Applications General,A program that prepares individuals to use microcomputer software applications.,11.06,3
+CIP,11.0701,Computer Science,A program that focuses on computer theory computing problems and solutions.,11.07,3
+CIP,11.0801,Web Page Digital/Multimedia and Information Resources Design,A program that prepares individuals to apply HTML XML and related tools.,11.08,3
+CIP,11.0901,Computer Systems Networking and Telecommunications,A program that prepares individuals to design install and manage computer networks.,11.09,3
+CIP,11.1001,Network and System Administration/Administrator,A program that prepares individuals to manage computer networks.,11.10,3
+CIP,11.1002,System Network and LAN/WAN Management/Manager,A program that prepares individuals to manage LAN WAN and other computer networks.,11.10,3
+CIP,11.1003,Computer and Information Systems Security/Information Assurance,A program that focuses on the protection of computer systems and networks.,11.10,3
+CIP,51,Health Professions and Related Programs,Programs that prepare individuals to work in the health professions.,,1
+CIP,51.38,Registered Nursing Nursing Administration Nursing Research and Clinical Nursing,Programs in registered nursing and related fields.,51,2
+CIP,51.3801,Registered Nursing/Registered Nurse,A program that prepares individuals to take the NCLEX-RN examination.,51.38,3
+CIP,51.3802,Nursing Administration,A program that prepares registered nurses to manage nursing services.,51.38,3
+CIP,51.3805,Family Practice Nurse/Nurse Practitioner,A program that prepares registered nurses to provide advanced primary care.,51.38,3
+CIP,52,Business Management Marketing and Related Support Services,Programs that prepare individuals for careers in business.,,1
+CIP,52.01,Business/Commerce General,General programs in business and commerce.,52,2
+CIP,52.0101,Business/Commerce General,A general program that focuses on the general study of business.,52.01,3
+CIP,52.0201,Business Administration and Management General,A general program that focuses on business administration and management.,52.02,3
+CIP,52.0301,Accounting and Finance,Programs that prepare individuals to practice the profession of accounting.,52.03,3
+CIP,52.1201,Management Information Systems General,A program that prepares individuals to provide and manage data systems.,52.12,3

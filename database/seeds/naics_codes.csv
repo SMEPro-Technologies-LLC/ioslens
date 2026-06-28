@@ -1,0 +1,24 @@
+system,code,title,description,parent_code,level
+NAICS,51,Information,Establishments engaged in the production and distribution of information and cultural products.,,1
+NAICS,511,Publishing Industries,Establishments engaged in publishing newspapers magazines books etc.,51,2
+NAICS,5112,Software Publishers,Establishments primarily engaged in publishing computer software.,511,3
+NAICS,51121,Software Publishers,Establishments engaged in computer software publishing and/or reproduction.,5112,4
+NAICS,518,Computing Infrastructure Providers Data Processing Web Hosting and Related Services,Establishments primarily engaged in providing the infrastructure for hosting or data processing services.,51,2
+NAICS,5182,Computing Infrastructure Providers Data Processing Web Hosting and Related Services,Data processing and related services.,518,3
+NAICS,51821,Data Processing Hosting and Related Services,Establishments primarily engaged in providing hosting services.,5182,4
+NAICS,519,Other Information Services,Establishments engaged in information services not classified elsewhere.,51,2
+NAICS,5191,Other Information Services,Data processing hosting and related services.,519,3
+NAICS,54,Professional Scientific and Technical Services,Establishments engaged in activities requiring a high degree of expertise and training.,,1
+NAICS,541,Professional Scientific and Technical Services,Professional scientific and technical services.,54,2
+NAICS,5415,Computer Systems Design and Related Services,Establishments primarily engaged in providing expertise in technology.,541,3
+NAICS,54151,Computer Systems Design and Related Services,Custom computer programming and computer systems design services.,5415,4
+NAICS,61,Educational Services,Establishments engaged in providing instruction and training.,,1
+NAICS,611,Educational Services,Schools colleges universities and training centers.,61,2
+NAICS,6111,Elementary and Secondary Schools,Establishments primarily engaged in furnishing academic courses.,611,3
+NAICS,6112,Junior Colleges,Establishments primarily engaged in furnishing academic or technical courses.,611,3
+NAICS,6113,Colleges Universities and Professional Schools,Establishments engaged in furnishing academic courses and granting degrees.,611,3
+NAICS,6114,Business Schools and Computer and Management Training,Establishments engaged in offering courses in secretarial science and computer.,611,3
+NAICS,62,Health Care and Social Assistance,Establishments providing health care and social assistance.,,1
+NAICS,621,Ambulatory Health Care Services,Establishments providing ambulatory health care services.,62,2
+NAICS,6211,Offices of Physicians,Establishments engaged in the practice of medicine under doctors of medicine.,621,3
+NAICS,6216,Home Health Care Services,Establishments primarily engaged in providing skilled nursing services.,621,3
