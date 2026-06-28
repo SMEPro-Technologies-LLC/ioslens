@@ -33,8 +33,9 @@ class VectorSearch:
         Returns:
             List of UDM mappings with similarity scores.
         """
-        # Format embedding as pgvector literal
-        vec_literal = "[" + ",".join(str(v) for v in embedding) + "]"
+        # Validate embedding values to prevent injection before formatting
+        validated = [float(v) for v in embedding]
+        vec_literal = "[" + ",".join(repr(v) for v in validated) + "]"
 
         result = await self._session.execute(
             text(
@@ -56,7 +57,9 @@ class VectorSearch:
         embedding: list[float],
     ) -> None:
         """Update the embedding vector for a UDM mapping."""
-        vec_literal = "[" + ",".join(str(v) for v in embedding) + "]"
+        # Validate embedding values before formatting as SQL literal
+        validated = [float(v) for v in embedding]
+        vec_literal = "[" + ",".join(repr(v) for v in validated) + "]"
         await self._session.execute(
             text(
                 "UPDATE udm_mappings SET embedding = :embedding::halfvec(1536) "

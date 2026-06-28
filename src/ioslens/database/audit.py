@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import uuid
 from typing import Any
@@ -47,7 +48,7 @@ class AuditWriter:
                 "resource_type": resource_type,
                 "resource_id": resource_id,
                 "decision": decision,
-                "metadata": str(metadata or {}),
+                "metadata": json.dumps(metadata or {}),
             },
         )
         audit_id = str(result.scalar())

@@ -63,6 +63,17 @@ class Settings(BaseSettings):
     api_workers: int = 4
     cors_origins: list[str] = ["http://localhost:3000"]
 
+    def model_post_init(self, __context: object) -> None:
+        """Validate settings after initialization."""
+        if (
+            self.environment == "production"
+            and self.jwt_secret == "dev-jwt-secret-change-in-production"
+        ):
+            raise ValueError(
+                "JWT_SECRET must be set to a strong secret in production environments. "
+                "The default placeholder value is not acceptable for production use."
+            )
+
 
 @lru_cache
 def get_settings() -> Settings:

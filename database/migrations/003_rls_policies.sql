@@ -26,34 +26,49 @@ CREATE POLICY users_tenant_isolation ON users
     AS RESTRICTIVE
     FOR ALL
     TO ioslens_app
-    USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
+    USING (
+        current_setting('app.tenant_id', false) <> ''
+        AND tenant_id = current_setting('app.tenant_id', false)::uuid
+    );
 
 -- ── GOVERNANCE POLICIES ──────────────────────────────────────────────
 CREATE POLICY policies_tenant_isolation ON governance_policies
     AS RESTRICTIVE
     FOR ALL
     TO ioslens_app
-    USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
+    USING (
+        current_setting('app.tenant_id', false) <> ''
+        AND tenant_id = current_setting('app.tenant_id', false)::uuid
+    );
 
 -- ── AUDIT LEDGER (read-only via RLS; inserts use elevated role) ───────
 CREATE POLICY audit_tenant_read ON audit_ledger
     AS RESTRICTIVE
     FOR SELECT
     TO ioslens_app
-    USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
+    USING (
+        current_setting('app.tenant_id', false) <> ''
+        AND tenant_id = current_setting('app.tenant_id', false)::uuid
+    );
 
 CREATE POLICY audit_tenant_insert ON audit_ledger
     AS RESTRICTIVE
     FOR INSERT
     TO ioslens_app
-    WITH CHECK (tenant_id = current_setting('app.tenant_id', true)::uuid);
+    WITH CHECK (
+        current_setting('app.tenant_id', false) <> ''
+        AND tenant_id = current_setting('app.tenant_id', false)::uuid
+    );
 
 -- ── EXECUTION TOKENS ─────────────────────────────────────────────────
 CREATE POLICY tokens_tenant_isolation ON execution_tokens
     AS RESTRICTIVE
     FOR ALL
     TO ioslens_app
-    USING (tenant_id = current_setting('app.tenant_id', true)::uuid);
+    USING (
+        current_setting('app.tenant_id', false) <> ''
+        AND tenant_id = current_setting('app.tenant_id', false)::uuid
+    );
 
 -- Helper function to set tenant context
 CREATE OR REPLACE FUNCTION set_tenant_context(p_tenant_id UUID)
