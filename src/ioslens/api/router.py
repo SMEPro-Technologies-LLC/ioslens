@@ -1,0 +1,32 @@
+"""Main API router — aggregates all v1 routes."""
+
+from fastapi import APIRouter
+
+from ioslens.api.v1 import governance, audit, udm, tenants, health
+
+api_router = APIRouter()
+
+# Health check (no prefix — accessible at /health)
+api_router.include_router(health.router, tags=["Health"])
+
+# V1 API
+api_router.include_router(
+    governance.router,
+    prefix="/v1/governance",
+    tags=["Governance"],
+)
+api_router.include_router(
+    audit.router,
+    prefix="/v1/audit",
+    tags=["Audit"],
+)
+api_router.include_router(
+    udm.router,
+    prefix="/v1/udm",
+    tags=["UDM"],
+)
+api_router.include_router(
+    tenants.router,
+    prefix="/v1/tenants",
+    tags=["Tenants"],
+)

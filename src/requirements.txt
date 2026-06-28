@@ -1,0 +1,26 @@
+# iOSLENS — Production dependencies
+
+# Web framework
+fastapi==0.110.2
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+pydantic-settings==2.2.1
+
+# Database
+sqlalchemy[asyncio]==2.0.30
+asyncpg==0.29.0
+alembic==1.13.1
+
+# Auth
+PyJWT==2.8.0
+cryptography==42.0.7
+
+# Redis
+redis[hiredis]==5.0.4
+
+# HTTP client (for LLM gateway)
+httpx==0.27.0
+
+# Logging / observability
+structlog==24.1.0
+prometheus-fastapi-instrumentator==7.0.0

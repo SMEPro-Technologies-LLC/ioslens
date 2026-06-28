@@ -1,0 +1,90 @@
+name: CD — Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Image tag to deploy (defaults to latest staging SHA)"
+        required: false
+        default: ""
+      confirm:
+        description: "Type DEPLOY to confirm production deployment"
+        required: true
+
+env:
+  REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
+
+jobs:
+  validate-input:
+    name: Validate Deployment Input
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Check confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "DEPLOY" ]; then
+            echo "ERROR: Confirmation required. Type DEPLOY to proceed."
+            exit 1
+          fi
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    needs: validate-input
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS_PROD }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Determine image tag
+        id: tag
+        run: |
+          TAG="${{ github.event.inputs.image_tag }}"
+          if [ -z "$TAG" ]; then
+            TAG=$(git rev-parse HEAD)
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Configure Docker for GCR
+        run: gcloud auth configure-docker gcr.io
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials ioslens-production \
+            --region ${{ secrets.GCP_REGION }} \
+            --project ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to production
+        env:
+          ENVIRONMENT: production
+          IMAGE_TAG: ${{ steps.tag.outputs.tag }}
+          REGISTRY: gcr.io/${{ secrets.GCP_PROJECT_ID }}
+        run: bash infra/scripts/deploy.sh
+
+      - name: Run production smoke tests
+        run: |
+          sleep 30
+          curl -f https://api.ioslens.ai/health || exit 1
+          echo "Production smoke test passed"
+
+      - name: Notify on success
+        if: success()
+        run: echo "Production deployment ${{ steps.tag.outputs.tag }} succeeded"
+
+      - name: Notify on failure
+        if: failure()
+        run: echo "Production deployment FAILED — manual rollback may be required"
