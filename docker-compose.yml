@@ -1,0 +1,115 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL 16 + pgvector ──
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: ioslens-postgres
+    environment:
+      POSTGRES_USER: ioslens
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ioslens_dev}
+      POSTGRES_DB: ioslens
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ioslens"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ioslens
+
+  # ── Redis (token replay store, rate limiting) ──
+  redis:
+    image: redis:7-alpine
+    container_name: ioslens-redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - ioslens
+
+  # ── API Server ──
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: api
+    container_name: ioslens-api
+    environment:
+      DATABASE_URL: postgresql://ioslens:ioslens_dev@postgres:5432/ioslens
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-dev-jwt-secret-change-in-production}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ioslens
+    restart: unless-stopped
+
+  # ── MCP Server ──
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: mcp
+    container_name: ioslens-mcp
+    environment:
+      DATABASE_URL: postgresql://ioslens:ioslens_dev@postgres:5432/ioslens
+      REDIS_URL: redis://redis:6379/0
+      MCP_PORT: 8001
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ioslens
+    restart: unless-stopped
+
+  # ── Prometheus ──
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ioslens-prometheus
+    volumes:
+      - ./infra/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - ioslens
+
+  # ── Grafana ──
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ioslens-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infra/grafana:/etc/grafana/provisioning
+    ports:
+      - "3000:3000"
+    networks:
+      - ioslens
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  ioslens:
+    driver: bridge
