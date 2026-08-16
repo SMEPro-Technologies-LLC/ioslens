@@ -13,7 +13,7 @@ alembic==1.13.1
 
 # Auth
 PyJWT==2.8.0
-cryptography==42.0.7
+cryptography==50.0.0
 
 # Redis
 redis[hiredis]==5.0.4
